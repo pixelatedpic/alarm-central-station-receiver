@@ -1,9 +1,18 @@
 from setuptools import setup, find_packages, Extension
+from sys import version_info
 
 pytjapi = Extension(
     'pytjapi',
     sources=['alarm_central_station_receiver/tigerjet/pytjapi.c']
 )
+
+
+def pyver():
+    if version_info > (3, 0):
+        return version_info.major
+
+    return ''
+
 
 setup(
     name='alarm_central_station_receiver',
@@ -16,12 +25,13 @@ setup(
     zip_safe=False,
     include_package_data=True,
     entry_points={
-        'console_scripts': ['alarmd=alarm_central_station_receiver.main:main']
+        'console_scripts': ['alarmd%s=alarm_central_station_receiver.main:main' % pyver()]
     },
+
     install_requires=[
         # XXX scud add support later 'RPi.GPIO',
         'pyaudio',
-        'python-daemon',
+        'python-daemon-3k',
         'requests'
     ]
 )
